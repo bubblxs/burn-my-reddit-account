@@ -4,7 +4,7 @@
 It is a bunch of JS code that helps you migrate all your subreddits, upvoted and saved items to a new reddit account. Why would you do that? well, i have no idea.
 
 <h3>How to use it?</h3>
-You can either download the code or run it via npx:
+You can either download the code or run it via npm:
 
   ####  Download
 ```
@@ -15,12 +15,6 @@ cd burn-my-reddit-account && npm install
 ```
 ```
 npm run start
-```
-
-#### Via npx
-
-```
-npx burn-my-reddit-account
 ```
 
 ### Dependencies
