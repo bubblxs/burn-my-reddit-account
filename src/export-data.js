@@ -10,10 +10,6 @@ export default async function ExportAccountData(redditSession, username) {
     const saved = await GetSavedOrUpvoted(username, redditSession, "saved")
     const savePath = `${os.homedir()}\\`
     
-    console.log(subreddits)
-    console.log(upvoted)
-    console.log(saved)
-
     let fileSchema = new FileSchema()
     let fileName = fileSchema.fileName()
     
