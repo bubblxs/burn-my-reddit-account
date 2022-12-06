@@ -13,9 +13,9 @@ import { GetCredentials } from "./credentials.js"
     const options = await WhatToDo()
 
     if (options === "Import/Export") {
-        const { options: ie } = await ImportExport()
+        const options = await ImportExport()
 
-        if (ie === "import") {
+        if (options === "import") {
             await ImportAccountData()
                 .then(() => console.log("Done! --> Import Account Data"))
                 .catch(err => console.log(`Error Importing data from your account. Error: ${err.message}`))
@@ -43,7 +43,7 @@ import { GetCredentials } from "./credentials.js"
 })()
 
 async function ImportExport() {
-    const { options } = await prompts({
+    const options = await prompts({
         type: "select",
         name: "options",
         message: "What to do?",
@@ -59,7 +59,7 @@ async function ImportExport() {
             }]
     })
 
-    return options
+    return options.options
 
 }
 

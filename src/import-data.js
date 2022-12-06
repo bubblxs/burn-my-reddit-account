@@ -9,7 +9,7 @@ import JoinSubreddit from "./api/join-subreddit.js"
 import { GetCredentials } from "./credentials.js"
  
 export default async function ImportAccountData() {
-    //TO DO: VALIDATE PATH AND FILE EXTENTION AND CONTENT
+    //TO DO: VALIDATE PATH, FILE EXTENTION AND CONTENT
     const { filePath } = await prompts({
         type: "text",
         name: "filePath",
@@ -19,10 +19,10 @@ export default async function ImportAccountData() {
     const { subreddits, upvoted, saved } = JSON.parse(fs.readFileSync(filePath, { encoding: "utf-8" }))
     const { username, password } = await GetCredentials()
     const { redditSession, modhash } = await Login(username, password)
-
+    
     if (subreddits) {
         for (let sr of subreddits) {
-            JoinSubreddit(sr)
+            JoinSubreddit(sr, modhash, redditSession)
                 .catch(err => console.log(`Error joining ${sr}. Code: ${err.response.status}`))
         }
     }
