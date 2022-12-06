@@ -1,13 +1,9 @@
 import api from "./base-api.js"
 import Body from "./classes/body.js"
+import { headersCookie } from "./headers.js"
 
 export default async function GetSavedOrUpvoted(username, redditSession, option) {
-    const headers = {
-        'sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Cookie': `reddit_session=${redditSession};`
-    }
-    const body = new Body("get", `user/${username}/${option}.json`, headers)
+    const body = new Body("get", `user/${username}/${option}.json`, headersCookie(redditSession))
     const res = await api(body)
 
     let data = res.data.data.children
@@ -30,7 +26,7 @@ export default async function GetSavedOrUpvoted(username, redditSession, option)
         count += 25
 
         let newParams = `user/${username}/${option}.json?count=${count}&after=${lastPost}`
-        let body = new Body("get", newParams, headers)
+        let body = new Body("get", newParams, headersCookie(redditSession))
         let res = await api(body)
         let data = res.data.data.children
 
