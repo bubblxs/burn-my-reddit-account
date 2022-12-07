@@ -13,7 +13,7 @@ export default async function ImportAccountData() {
     const { filePath } = await prompts({
         type: "text",
         name: "filePath",
-        message: "File path",
+        message: "File path"
     })
 
     const { subreddits, upvoted, saved } = JSON.parse(fs.readFileSync(filePath, { encoding: "utf-8" }))
@@ -21,30 +21,30 @@ export default async function ImportAccountData() {
     const { redditSession, modhash } = await Login(username, password)
     
     if (subreddits) {
-        for (let sr of subreddits) {
-            JoinSubreddit(sr, modhash, redditSession)
-                .catch(err => console.log(`Error joining ${sr}. Code: ${err.response.status}`))
+        for (let s of subreddits) {
+            JoinSubreddit(s, modhash, redditSession)
+                .catch(err => console.log(`Error joining ${s}. Code: ${err.response.status}`))
         }
     }
 
     if (upvoted) {
-        for (let up of upvoted) {
-            Upvote(up.postId, up.subreddit, modhash, redditSession)
+        for (let u of upvoted) {
+            Upvote(u.postId, u.subreddit, modhash, redditSession)
                 .catch((err) => {
                     if (err.response.status === 400) {
-                        console.log(`Post ${up.postId} from ${up.subreddit} couldn't be upvoted, so it was saved instead.`)
+                        console.log(`Post ${u.postId} from ${u.subreddit} couldn't be upvoted, so it was saved instead.`)
                     }
 
-                    Save(up.postId, redditSession, modhash)
-                        .catch(err => console.log(`Post ${up.postId} couldn't be saved either lol. Error ${err.message}`))
+                    Save(u.postId, redditSession, modhash)
+                        .catch(err => console.log(`Post ${u.postId} couldn't be saved either lol. Error ${err.message}`))
                 })
         }
     }
 
     if (saved) {
-        for (let save of saved) {
-            Save(save.postId, redditSession, modhash)
-                .catch(err => console.log(`Error "${err.message}" while saving ${save.postId} from ${save.subreddit}`))
+        for (let s of saved) {
+            Save(s.postId, redditSession, modhash)
+                .catch(err => console.log(`Error "${err.message}" while saving ${s.postId} from ${s.subreddit}`))
         }
     }
 }
