@@ -16,7 +16,7 @@ import { GetCredentials } from "./credentials.js"
         const options = await ImportExport()
 
         if (options === "import") {
-            await ImportAccountData()
+            ImportAccountData()
                 .then(() => console.log("Done! --> Import Account Data"))
                 .catch(err => console.log(`Error Importing data from your account. Error: ${err.message}`))
 
@@ -24,7 +24,7 @@ import { GetCredentials } from "./credentials.js"
             const { username, password } = await GetCredentials()
             const { redditSession } = await Login(username, password);
 
-            await ExportAccountData(redditSession, username)
+            ExportAccountData(redditSession, username)
                 .then(() => console.log("Done! --> Exporting Data"))
                 .catch(err => console.log(`Error exporting data from your account. Error: ${err.message}`))
         }
