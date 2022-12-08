@@ -6,19 +6,19 @@ export default async function GetSavedOrUpvoted(username, redditSession, option)
     const body = new Body("get", `user/${username}/${option}.json`, headersCookie(redditSession))
     const res = await api(body)
 
-    let responseData = res.data.data.children
+    let data = res.data.data.children
     let lastPost = ""
     let count = 25
-    let data = []
+    let temp = []
 
-    for (let i = 0, l = responseData.length; i < l; i++) {
-        data.push({
-            postId: responseData[i].data.name,
-            subreddit: responseData[i].data.subreddit
+    for (let i = 0, l = data.length; i < l; i++) {
+        temp.push({
+            postId: data[i].data.name,
+            subreddit: data[i].data.subreddit
         })
 
         if (i + 1 === l) {
-            lastPost = responseData[i].data.name
+            lastPost = data[i].data.name
         }
     }
 
@@ -31,7 +31,7 @@ export default async function GetSavedOrUpvoted(username, redditSession, option)
         let data = res.data.data.children
 
         if (data.length <= 0) {
-            return data
+            return temp
         }
 
         if (data[data.length - 1].data.name === lastPost) {
@@ -39,7 +39,7 @@ export default async function GetSavedOrUpvoted(username, redditSession, option)
         }
 
         for (let i = 0, l = data.length; i < l; i++) {
-            data.push({
+            temp.push({
                 postId: data[i].data.name,
                 subreddit: data[i].data.subreddit
             })
@@ -50,5 +50,5 @@ export default async function GetSavedOrUpvoted(username, redditSession, option)
         }
     }
 
-    return data
+    return temp
 }
