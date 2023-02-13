@@ -1,97 +1,66 @@
 #!/usr/bin/env node
 
-import chalk from "chalk"
-import prompts from "prompts"
-
 import Login from "./api/login.js"
 import StartMigration from "./start-migration.js"
 import ExportAccountData from "./export-data.js"
 import ImportAccountData from "./import-data.js"
-import { GetCredentials } from "./credentials.js"
+import { Action, GetCredentials, ImportExport, Options } from "./interaction.js"
 
 (async () => {
-    const options = await WhatToDo()
+    const action = await Action()
 
-    if (options === "Import/Export") {
-        const options = await ImportExport()
+    if (action === "import/export") {
+        let options = await ImportExport()
 
         if (options === "import") {
-            ImportAccountData()
-                .then(() => console.log("Done! --> Import Account Data"))
-                .catch(err => console.log(`Error Importing data from your account. Error: ${err.message}`))
+            try {
+                await ImportAccountData()
+
+            } catch (error) {
+                throw new Error(`${error.message}`)
+            }
 
         } else {
             const { username, password } = await GetCredentials()
-            const { redditSession } = await Login(username, password);
+            const { redditSession } = await Login(username, password)
 
-            ExportAccountData(redditSession, username)
-                .then(() => console.log("Done! --> Exporting Data"))
-                .catch(err => console.log(`Error exporting data from your account. Error: ${err.message}`))
+            if (!username || !password) {
+                throw new Error("check your credentials")
+            }
+
+            try {
+                await ExportAccountData(redditSession, username)
+
+            } catch (error) {
+                throw new Error(`Error while exporting data\n${error.message}`)
+            }
         }
 
-    } else {
-        const options = await GetUserOptions()
+        console.log("Done!")
+        return
+    }
 
-        console.log(`\n>>> ${chalk.yellowBright("Insert the credentials of your")} ${chalk.bold("ATUAL ACCOUNT")} <<<`)
-        const oldAccount = await GetCredentials()
+    try {
+        const options = await Options()
+        
+        console.log("\nplease, insert bellow the credentials from both your atual and new account\n")
 
-        console.log(`\n>>> ${chalk.yellowBright("Insert the credentials of your")} ${chalk.bold("NEW ACCOUNT")} <<<`)
+        console.log("credentials from your account")
+        const account = await GetCredentials()
+        
+        console.log("credentials from new account")
         const newAccount = await GetCredentials()
 
-        await StartMigration(oldAccount, newAccount, options)
+        if (!account.username || !account.password ||
+            !newAccount.password || !newAccount.password) {
+            throw new Error("check your credentials")
+        }
+
+        await StartMigration(account, newAccount, options)
+
+        console.log("Done!")
+
+    } catch (error) {
+        throw new Error(`Error while migrating your account\n${error.message}`)
     }
 })()
-
-async function ImportExport() {
-    const options = await prompts({
-        type: "select",
-        name: "options",
-        message: "What to do?",
-        choices: [
-            {
-                title: "Import account data from a file",
-                value: "import",
-                selected: true
-            }
-            , {
-                title: "Export account data to a file",
-                value: "export"
-            }]
-    })
-
-    return options.options
-
-}
-
-async function WhatToDo() {
-    const options = await prompts({
-        type: "select",
-        name: "options",
-        message: "What to do?",
-        choices: [
-            {
-                title: "Account Migration",
-                value: "accountMigration",
-                selected: true
-            }
-            , {
-                title: "Import/Export",
-                value: "Import/Export"
-            }]
-    })
-
-    return options.options
-}
-
-async function GetUserOptions() {
-    const options = await prompts({
-        type: "multiselect", name: "options", message: "What would you like to export?",
-        choices: [
-            { title: "Upvoted itens", value: "upvoted", selected: true },
-            { title: "Saved itens", value: "saved", selected: true },
-            { title: "Joined subreddits", value: "subreddits", selected: true }
-        ]
-    })
-
-    return options.options
-}
