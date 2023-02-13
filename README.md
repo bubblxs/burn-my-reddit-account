@@ -24,5 +24,5 @@ npx burnmyredditaccount
 ### Dependencies
 
 <li><a href="https://axios-http.com/">Axios</a></li>
-<li><a href="https://www.npmjs.com/package/chalk">Chalk</a></li>
+<!-- <li><a href="https://www.npmjs.com/package/chalk">Chalk</a></li> -->
 <li><a href="https://www.npmjs.com/package/prompts">Prompts</a></li>
