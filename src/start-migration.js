@@ -8,7 +8,7 @@ import JoinSubreddits from "./api/join-subreddit.js"
 import GetSavedOrUpvoted from "./api/get-saved-or-upvoted.js"
 
 export default async function StartMigration(mainAccount, newAccount, options) {
-    console.log(`\nThe migration has begun! It might take a while. DO NOT CLOSE THE TERMINAL!`)
+    console.log(`\nThe migration has begun! It might take a while.`)
 
     let { username, redditSession } = await Login(mainAccount.username, mainAccount.password)
     let saved = null

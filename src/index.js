@@ -32,7 +32,7 @@ import { Action, GetCredentials, ImportExport, Options } from "./interaction.js"
                 await ExportAccountData(redditSession, username)
 
             } catch (error) {
-                throw new Error(`Error while exporting data\n${error.message}`)
+                throw new Error(`Error while exporting your data\n${error.message}`)
             }
         }
 
@@ -43,12 +43,12 @@ import { Action, GetCredentials, ImportExport, Options } from "./interaction.js"
     try {
         const options = await Options()
         
-        console.log("\nplease, insert bellow the credentials from both your atual and new account\n")
+        console.log("\nplease, enter your current and new account credentials below\n")
 
-        console.log("credentials from your account")
+        console.log("credentials of your account")
         const account = await GetCredentials()
         
-        console.log("credentials from new account")
+        console.log("credentials of your new account")
         const newAccount = await GetCredentials()
 
         if (!account.username || !account.password ||
