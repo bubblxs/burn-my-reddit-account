@@ -38,7 +38,7 @@ export default async function StartMigration(mainAccount, newAccount, options) {
         try {
             await Save(e.postId, rs, mh)
 
-        } catch (err) {
+        } catch (error) {
             console.log(`Post ${e.postId} could not be saved`)
         }
     })
@@ -47,9 +47,9 @@ export default async function StartMigration(mainAccount, newAccount, options) {
         try {
             await Upvote(e.postId, e.subreddit, mh, rs)
 
-        } catch (err) {
-            if (err.response.status === 400) {
-                console.log(`Post ${e.postId} couldn't be upvoted so it will saved instead`)
+        } catch (error) {
+            if (error.response.status === 400) {
+                console.log(`Post ${e.postId} couldn't be upvoted so it will be saved instead`)
 
                 try {
                     await Save(e.postId, rs, mh)
@@ -57,6 +57,9 @@ export default async function StartMigration(mainAccount, newAccount, options) {
                 } catch (error) {
                     console.log(`Post ${e.postId} couldn't be saved.`)
                 }
+
+            } else {
+                console.log(`Post "https://reddit.com/r/${e.subreddit}/comments/${e.postId.split("_")[1]}" couldn't be upvoted`)
             }
         }
     })
@@ -65,7 +68,7 @@ export default async function StartMigration(mainAccount, newAccount, options) {
         try {
             await JoinSubreddits(e, mh, rs)
 
-        } catch (err) {
+        } catch (error) {
             console.log(`Error while joining ${e}`)
         }
     })

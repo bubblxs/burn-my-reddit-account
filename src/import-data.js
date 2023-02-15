@@ -7,59 +7,52 @@ import JoinSubreddit from "./api/join-subreddit.js"
 import { GetCredentials } from "./interaction.js"
 
 export default async function ImportAccountData() {
-    //TO DO: VALIDATE PATH, FILE EXTENTION AND CONTENT
+    //TO DO: VALIDATE PATH, FILE EXT AND CONTENT
     const { filePath } = await prompts({
         type: "text",
         name: "filePath",
         message: "File path"
     })
-
     const { subreddits, upvoted, saved } = JSON.parse(fs.readFileSync(filePath, { encoding: "utf-8" }))
     const { username, password } = await GetCredentials()
     const { redditSession, modhash } = await Login(username, password)
 
-    if (subreddits) {
-        for (let sr of subreddits) {
-            try {
-                await JoinSubreddit(sr, modhash, redditSession)
+    subreddits?.map(async (e) => {
+        try {
+            await JoinSubreddit(e, modhash, redditSession)
 
-            } catch (error) {
-                console.log(`Error joining ${sr}. Code: ${error.response.status}`)
-            }
+        } catch (error) {
+            console.log(`Error trying to join "${e}".`)
         }
-    }
+    })
 
-    if (upvoted) {
-        for (let up of upvoted) {
-            try {
-                await Upvote(up.postId, up.subreddit, modhash, redditSession)
+    upvoted?.map(async (e) => {
+        try {
+            await Upvote(e.postId, e.subreddit, modhash, redditSession)
 
-            } catch (error) {
-                if (error.response.status === 400) {
-                    console.log(`Post ${up.postId} from ${up.subreddit} couldn't be upvoted, so it will be saved instead.`)
+        } catch (error) {
+            if (error.response.status === 400) {
+                console.log(`Post ${e.postId} from ${e.subreddit} couldn't be upvoted, so it will be saved instead.`)
 
-                    try {
-                        await Save(up.postId, redditSession, modhash)
+                try {
+                    await Save(e.postId, redditSession, modhash)
 
-                    } catch (error) {
-                        console.log(`Post ${up.postId} couldn't be saved either lol. Error ${error.message}`)
-                    }
-
-                } else {
-                    console.log(`Post ${up.postId} couldn't be upvoted. Error ${error.message}`)
+                } catch (error) {
+                    console.log(`Post ${e.postId} couldn't be saved either lol.`)
                 }
+
+            } else {
+                console.log(`Post "https://reddit.com/r/${e.subreddit}/comments/${e.postId.split("_")[1]}" couldn't be upvoted`)
             }
         }
-    }
+    })
 
-    if (saved) {
-        for (let sv of saved) {
-            try {
-                await Save(sv.postId, redditSession, modhash)
+    saved?.map(async (e) => {
+        try {
+            await Save(e.postId, redditSession, modhash)
 
-            } catch (error) {
-                console.log(`Error ${error.message} while saving ${sv.postId} from ${sv.subreddit}`)
-            }
+        } catch (error) {
+            console.log(`Error ${error.message} while saving ${e.postId} from ${e.subreddit}`)
         }
-    }
+    })
 }

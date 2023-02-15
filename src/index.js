@@ -36,7 +36,6 @@ import { Action, GetCredentials, ImportExport, Options } from "./interaction.js"
             }
         }
 
-        console.log("Done!")
         return
     }
 
@@ -57,8 +56,6 @@ import { Action, GetCredentials, ImportExport, Options } from "./interaction.js"
         }
 
         await StartMigration(account, newAccount, options)
-
-        console.log("Done!")
 
     } catch (error) {
         throw new Error(`Error while migrating your account\n${error.message}`)
