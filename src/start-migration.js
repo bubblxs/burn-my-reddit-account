@@ -76,7 +76,7 @@ export default async function StartMigration(mainAccount, newAccount, options) {
     const del = await prompts({
         type: 'toggle',
         name: "value",
-        message: `Would you like to delete your old account(${mainAccount.username}?`,
+        message: `Would you like to delete your old account (${mainAccount.username})?`,
         initial: false,
         active: "yes",
         inactive: "no"
