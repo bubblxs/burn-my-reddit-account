@@ -19,7 +19,7 @@ npm run start
 
 ### npx
 ```
-npx burnmyredditaccount
+npx burn-my-reddit-account
 ```
 ### Dependencies
 
