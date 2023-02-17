@@ -7,7 +7,6 @@ import JoinSubreddit from "./api/join-subreddit.js"
 import { GetCredentials } from "./interaction.js"
 
 export default async function ImportAccountData() {
-    //TO DO: VALIDATE PATH, FILE EXT AND CONTENT
     const { filePath } = await prompts({
         type: "text",
         name: "filePath",
@@ -38,7 +37,7 @@ export default async function ImportAccountData() {
                     await Save(e.postId, redditSession, modhash)
 
                 } catch (error) {
-                    console.log(`Post ${e.postId} couldn't be saved either lol.`)
+                    console.log(`Post "https://reddit.com/r/${e.subreddit}/comments/${e.postId.split("_")[1]}" couldn't be upvoted`)
                 }
 
             } else {
