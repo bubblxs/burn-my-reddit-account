@@ -5,7 +5,6 @@ It is a bunch of JS code that helps you migrate all your subreddits, upvoted and
 Why would you use Reddit to begin with? Well, i have no idea.
 
 <h3>How to use it?</h3>
-You can download the code or run it via npx:
 
 ####  Download
 ```
@@ -16,11 +15,6 @@ cd burn-my-reddit-account && npm install
 ```
 ```
 npm run start
-```
-
-### npx
-```
-npx burn-my-reddit-account
 ```
 ### Dependencies
 
