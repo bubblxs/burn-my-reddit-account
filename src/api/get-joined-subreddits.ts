@@ -52,7 +52,6 @@ export const getJoinedSubreddits = async (redditSession: string) => {
                     attempt += 1;
                 } else {
                     log(`we could not fetch the r/${subreddit} (${attempt} attempt(s) were made). You wll have to join them by yourself. Axios error code: ${error.response.status}`, "Error");
-                    i -= 1;
                     attempt = 0;
                 }
             } else {
