@@ -20,7 +20,7 @@ export const login = async (username: string, password: string) => {
         return {
             error: err,
             code: code
-        }
+        };
     }
 
     const redditSession = (response.headers["set-cookie"]!).toString().split(";").join("").split(",").find((e: string) => e.match(/(reddit_session=)/g))!.trimStart().split(" ")[0].split("=")[1];

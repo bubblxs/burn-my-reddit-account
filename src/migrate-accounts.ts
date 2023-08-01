@@ -31,16 +31,16 @@ export const migrateAccounts = async (currentAccount: AccountCrendentials, newAc
 
     const { redditSession: rs, modhash: mh } = newAcc;
 
-    await subreddits?.forEach(async (subreddit: any) => {
+    subreddits?.forEach(async (subreddit: any) => {
         try {
-            await reddit.joinSubreddit(subreddit.id, mh, rs!);
+            await reddit.joinSubreddit(typeof subreddit === "string" ? subreddit : subreddit.id, mh, rs!);
 
         } catch (error) {
-            log(`we couldnt join to r/${subreddit.name}. ${(error as Error).message}`, "Error");
+            log(`we couldnt join to r/${typeof subreddit === "string" ? subreddit : subreddit.name}. ${(error as Error).message}`, "Error");
         }
     });
 
-    await upvoted?.forEach(async (post: any) => {
+    upvoted?.forEach(async (post: any) => {
         const postUrl = `https://reddit.com/r/${post.subreddit}/comments/${post.id.split("_")[1]}`;
 
         try {
@@ -61,7 +61,7 @@ export const migrateAccounts = async (currentAccount: AccountCrendentials, newAc
         }
     });
 
-    await saved?.forEach(async (post: any) => {
+    saved?.forEach(async (post: any) => {
         const postUrl = `https://reddit.com/r/${post.subreddit}/comments/${post.id.split("_")[1]}`;
 
         try {

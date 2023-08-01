@@ -23,13 +23,13 @@ export const exportData = async (username: string, password: string) => {
         saved: saved,
         upvoted: upvoted,
         subreddits: subreddits
-    }
+    };
 
     fs.writeFile(savePath, JSON.stringify(content), "utf-8", (err) => {
         if (err) {
             log(`${err.message}`, "Error", true);
         }
-    })
+    });
 
     log(`done! you can find the file at '${savePath}'`, "Success");
 };

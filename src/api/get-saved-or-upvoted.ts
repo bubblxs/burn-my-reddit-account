@@ -18,13 +18,13 @@ export const getSavedOrUpvoted = async (username: string, redditSession: string,
         posts.push({
             id: post.name,
             subreddit: post.subreddit
-        })
+        });
     }
 
     let count = 25;
     let lastPostId = posts[posts.length - 1].id;
     while (true) {
-        waitSeconds(1);
+        await waitSeconds(1);
         count += 25;
 
         let endpoint = `user/${username}/${action}.json?count=${count}&after=${lastPostId}`;

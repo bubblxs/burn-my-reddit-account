@@ -15,7 +15,7 @@ const redditAPI = {
     deleteAccount,
     getSavedOrUpvoted,
     getJoinedSubreddits,
-};
+}
 
 export {
     redditAPI as r,

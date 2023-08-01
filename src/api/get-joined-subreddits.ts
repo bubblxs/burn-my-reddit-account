@@ -18,7 +18,7 @@ export const getJoinedSubreddits = async (redditSession: string) => {
     rawData.sort();
     rawData = removeDuplicated(rawData);
 
-    ignoredSubreddits.forEach((el: any) => {
+    ignoredSubreddits.forEach((el: string) => {
         const idx = rawData.indexOf(el);
 
         if (idx !== -1) rawData.splice(idx, 1);
@@ -51,7 +51,7 @@ export const getJoinedSubreddits = async (redditSession: string) => {
                     i -= 1;
                     attempt += 1;
                 } else {
-                    log(`we could not fetch the r/${subreddit} (${attempt} attempt(s) were made). You wll have to join them by yourself. Axios error code: ${error.response.status}`, "Error");
+                    log(`we could not fetch the r/${subreddit} (${attempt} attempts were made). You wll have to join them by yourself. Axios error code: ${error.response.status}`, "Error");
                     attempt = 0;
                 }
             } else {

@@ -3,7 +3,7 @@ import { getRandomUserAgent } from "./headers.js";
 
 type Method = "GET" | "POST";
 
-const request = async (method: Method, endpoint: string, headers: any, options?: any, params?: any) => {
+const request = async (method: Method, endpoint: string, headers: object, options?: any, params?: any) => {
     const url = `https://old.reddit.com/${endpoint}`;
     const ua = getRandomUserAgent();
     const response = await axios(url, {

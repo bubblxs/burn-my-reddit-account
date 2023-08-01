@@ -70,7 +70,7 @@ const headers = (cookie?: string) => {
         "Sec-GPC": 1,
         "Upgrade-Insecure-Requests": 0,
         "User-Agent": getRandomUserAgent()
-    }
+    };
 
     if (cookie !== undefined) {
         return {
@@ -80,9 +80,9 @@ const headers = (cookie?: string) => {
     }
 
     return headers;
-};
+}
 
 export {
-    getRandomUserAgent,
-    headers
-}
+    headers,
+    getRandomUserAgent
+};

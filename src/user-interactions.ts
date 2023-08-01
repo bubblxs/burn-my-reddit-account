@@ -13,7 +13,7 @@ const getCredentials = async () => {
         name: "password",
         message: "password: ",
         validate: (pswd: string) => pswd.length < 3 ? "password must have at least 3 chars" : true
-    })
+    });
 
     return {
         username: username,
@@ -37,7 +37,7 @@ const importOrExport = async () => {
                 value: "export"
             }
         ]
-    })
+    });
 
     return options.options;
 }
@@ -57,9 +57,9 @@ const migrateAccountsOrImportExport = async () => {
                 title: "import/export data",
                 value: "import/export"
             }]
-    })
+    });
 
-    return options.options
+    return options.options;
 }
 
 const getFilePath = async () => {
