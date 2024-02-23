@@ -8,11 +8,9 @@ import { getCredentials, importOrExport, migrateAccountsOrImportExport } from ".
 
 (async () => {
     try {
-        // what would you like to do?
         const action = await migrateAccountsOrImportExport();
 
         if (action === "import/export") {
-            // pick an option
             const option = await importOrExport();
 
             log("current account", "Log");
@@ -28,15 +26,17 @@ import { getCredentials, importOrExport, migrateAccountsOrImportExport } from ".
         } else {
             log("current account", "Log");
             const currentAccount = await getCredentials();
-
+            
             log("new account", "Log");
             const newAccount = await getCredentials();
-
-            log("accounts migration has begun", "Log");
+            
+            log("account migration has started. it may take a few minutes", "Log");
             await migrateAccounts(currentAccount, newAccount);
         }
     } catch (error) {
-        console.log((error as Error).message);
+        /* 🤡 */
         log((error as Error).message, "Error", true);
     }
+
+    log("all done!", "Success");
 })();

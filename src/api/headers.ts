@@ -72,7 +72,7 @@ const headers = (cookie?: string) => {
         "User-Agent": getRandomUserAgent()
     };
 
-    if (cookie !== undefined) {
+    if (cookie) {
         return {
             ...headers,
             "Cookie": `reddit_session=${cookie}`

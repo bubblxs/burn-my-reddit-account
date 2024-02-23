@@ -1,32 +1,39 @@
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { reddit } from "./index.js";
 import { headers } from "./headers.js";
-import { removeDuplicated } from "../util.js";
-import { waitSeconds, log } from "../util.js";
+import { waitSeconds, log, removeDuplicated } from "../util.js";
+
+/**
+ *
+ * to do: fix regex
+ * apparently reddit has changed some of its html tags so filtering them is kinda fucked up now
+ * is still working but we are getting random subreddits recommended in https://old.reddit.com/subreddits/
+ *  
+**/ 
 
 export const getJoinedSubreddits = async (redditSession: string) => {
-    await waitSeconds(1);
     const ignoredSubreddits = ["users", "popular", "all", "announcements"];
     const filterTagsRegex = /<a href="https:\/\/old.reddit.com\/(user|r)\/(.*?)\/" class="choice" >(.*?)<\/a>/gim;
     const removeTagsRegex = /(<a href="https:\/\/old.reddit.com\/(user|r)\/(.*?)\/" class="choice" >|<\/a>)/gim;
     const endpoint = "subreddits";
     const response = await reddit.request("GET", endpoint, headers(redditSession));
-    // rawData, in this case, will receive the names of all subreddits that you have been participating
-    let rawData: string[] = (response.data.match(filterTagsRegex)).toString().replace(removeTagsRegex, "").split(",");
+    let subredditsList: string[] = (response.data.match(filterTagsRegex)).toString().replace(removeTagsRegex, "").split(",");
     let joinedSubreddits: { id: string, name: string }[] = [];
 
-    rawData.sort();
-    rawData = removeDuplicated(rawData);
+    subredditsList.sort();
+    subredditsList = removeDuplicated(subredditsList);
 
     ignoredSubreddits.forEach((el: string) => {
-        const idx = rawData.indexOf(el);
+        const idx = subredditsList.indexOf(el);
 
-        if (idx !== -1) rawData.splice(idx, 1);
+        if (idx !== -1) {
+            subredditsList.splice(idx, 1);
+        }
     });
 
     let attempt = 0;
-    for (let i = 0, l = rawData.length; i < l; i++) {
-        const subreddit = rawData[i];
+    for (let i = 0, l = subredditsList.length; i < l; i++) {
+        const subreddit = subredditsList[i];
 
         try {
             const endpoint = `${subreddit.startsWith("u/") ? subreddit : `r/${subreddit}`}/about.json`;
@@ -44,18 +51,17 @@ export const getJoinedSubreddits = async (redditSession: string) => {
             const err = error as Error;
 
             if (isAxiosError(error) && error.response?.status === 429) {
-                const maxAttempts = 30;
 
-                if (attempt < maxAttempts) {
+                if (attempt < 5) {
                     await waitSeconds(5);
                     i -= 1;
                     attempt += 1;
                 } else {
-                    log(`we could not fetch the r/${subreddit} (${attempt} attempts were made). You wll have to join them by yourself. Axios error code: ${error.response.status}`, "Error");
+                    log(`[_getting subreddits_] we could not fetch r/${subreddit} (${attempt} attempts were made). You wll have to join them by yourself. Axios error code: ${error.response.status}`, "Error");
                     attempt = 0;
                 }
             } else {
-                log(`we could not fetch r/${subreddit}. ${err.message}.`, "Error");
+                log(`[_getting subreddits_] we could not fetch r/${subreddit}. ${err.message}.`, "Error");
                 attempt = 0;
             }
         }

@@ -9,16 +9,10 @@ export const exportData = async (username: string, password: string) => {
     const fileName = `${Date.now()}_${username}.json`;
     const savePath = path.join(homedir, fileName);
     const account = await reddit.login(username, password);
-
-    if (account?.error) {
-        log(`error exporting your account. ${account.error}`, "Error", true);
-    }
-
     const { redditSession } = account;
-
-    const saved = await reddit.getSavedOrUpvoted(username!, redditSession!, "saved");
-    const upvoted = await reddit.getSavedOrUpvoted(username!, redditSession!, "upvoted");
-    const subreddits = await reddit.getJoinedSubreddits(redditSession!);
+    const saved = await reddit.getSavedOrUpvoted(username, redditSession, "saved");
+    const upvoted = await reddit.getSavedOrUpvoted(username, redditSession, "upvoted");
+    const subreddits = await reddit.getJoinedSubreddits(redditSession);
     const content = {
         saved: saved,
         upvoted: upvoted,
@@ -31,5 +25,5 @@ export const exportData = async (username: string, password: string) => {
         }
     });
 
-    log(`done! you can find the file at '${savePath}'`, "Success");
+    log(`[_exporting data_] done! you can find the file at '${savePath}'`, "Success");
 };
