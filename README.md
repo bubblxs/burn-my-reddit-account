@@ -8,7 +8,7 @@ Why would you use Reddit to begin with? Well, i have no idea.
 
 ####  Download
 ```
-git clone https://github.com/MMLXXVII/burn-my-reddit-account.git
+git clone https://github.com/bubblxs/burn-my-reddit-account.git
 ```
 ```
 cd burn-my-reddit-account && npm install
