@@ -1,3 +1,4 @@
+import { log } from "../util.js";
 import { reddit } from "./index.js";
 import { headers } from "./headers.js";
 
@@ -9,6 +10,11 @@ export const getSavedOrUpvoted = async (username: string, redditSession: string,
     const postsList = response.data.data.children;
     let posts: { id: string, subreddit: string }[] = [];
 
+    if (postsList.length < 1) {
+        log(`[_getting ${action}_] zero posts ${action} found`, "Warning");
+        return posts;
+    }
+
     for (let i = 0, l = postsList.length; i < l; i++) {
         const post = postsList[i].data;
 
@@ -18,8 +24,7 @@ export const getSavedOrUpvoted = async (username: string, redditSession: string,
         });
     }
 
-    let lastPostId = posts[posts.length - 1].id;
-    for (let count = 25; ; count += 25) {
+    for (let count = 25, lastPostId = posts[posts.length - 1].id; ; count += 25) {
         const endpoint = `user/${username}/${action}.json?count=${count}&after=${lastPostId}`;
         const response = await reddit.request("GET", endpoint, headers(redditSession));
         const pagePosts = response.data.data.children;
@@ -37,6 +42,6 @@ export const getSavedOrUpvoted = async (username: string, redditSession: string,
 
         lastPostId = pagePosts[pagePosts.length - 1].data.name;
     }
-    
+
     return posts;
 }

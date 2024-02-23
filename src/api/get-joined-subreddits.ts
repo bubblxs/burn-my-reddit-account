@@ -9,7 +9,7 @@ import { waitSeconds, log, removeDuplicated } from "../util.js";
  * apparently reddit has changed some of its html tags so filtering them is kinda fucked up now
  * is still working but we are getting random subreddits recommended in https://old.reddit.com/subreddits/
  *  
-**/ 
+**/
 
 export const getJoinedSubreddits = async (redditSession: string) => {
     const ignoredSubreddits = ["users", "popular", "all", "announcements"];
@@ -31,8 +31,12 @@ export const getJoinedSubreddits = async (redditSession: string) => {
         }
     });
 
-    let attempt = 0;
-    for (let i = 0, l = subredditsList.length; i < l; i++) {
+    if (subredditsList.length < 1) {
+        log("[_getting subreddits_] zero subreddits joined found", "Warning");
+        return joinedSubreddits;
+    }
+
+    for (let i = 0, attempt = 0, l = subredditsList.length; i < l; i++) {
         const subreddit = subredditsList[i];
 
         try {
@@ -51,7 +55,6 @@ export const getJoinedSubreddits = async (redditSession: string) => {
             const err = error as Error;
 
             if (isAxiosError(error) && error.response?.status === 429) {
-
                 if (attempt < 5) {
                     await waitSeconds(5);
                     i -= 1;
