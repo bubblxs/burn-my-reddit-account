@@ -1,4 +1,4 @@
-## burn-my-reddit-account
+## burn my reddit account
 
 <h3>What is it?</h3>
 It is a bunch of JS code that helps you migrate all your subreddits, upvoted and saved items to a new Reddit account or save to a file for later.
