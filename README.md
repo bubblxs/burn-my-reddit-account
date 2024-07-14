@@ -1,12 +1,8 @@
-## burn my reddit account
+<h2 align="center"> burn my reddit account </h2>
 
-<h3>What is it?</h3>
-It is a bunch of JS code that helps you migrate all your subreddits, upvoted and saved items to a new Reddit account or save to a file for later.
-Why would you use Reddit to begin with? Well, i have no idea.
+> it is a bunch of js code that helps you migrate all your subreddits, upvoted and saved items to a new reddit account or save to a file for later. why would you use reddit to begin with? well, i have no idea.
 
-<h3>How to use it?</h3>
-
-####  Download
+###  usage
 ```
 git clone https://github.com/bubblxs/burn-my-reddit-account.git
 ```
@@ -16,8 +12,7 @@ cd burn-my-reddit-account && npm install
 ```
 npm run start
 ```
-### Dependencies
+### dependencies
 
 <li><a href="https://axios-http.com/">Axios</a></li>
-<!-- <li><a href="https://www.npmjs.com/package/chalk">Chalk</a></li> -->
 <li><a href="https://www.npmjs.com/package/prompts">Prompts</a></li>
