@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { r as reddit } from "./api/index.js";
+import { redditAPI as reddit } from "./api/index.js";
 
 type LogType = "Log" | "Success" | "Warning" | "Error";
 
@@ -60,9 +60,8 @@ const removeDuplicated = (arr: any[]) => {
 
 const buildUrl = (postId: string, subreddit: string) => {
     const id = postId.split("_")[1];
-    const postUrl = `https://reddit.com/r/${subreddit}/comments/${id}`;
-
-    return postUrl;
+    
+    return `https://reddit.com/r/${subreddit}/comments/${id}`;
 }
 
 const joinAllSubreddits = async (subreddits: { id: string, name: string }[] | string[], modhash: string, redditSession: string) => {

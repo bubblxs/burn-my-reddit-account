@@ -11,11 +11,6 @@ export const login = async (username: string, password: string) => {
     };
     const endpoint = `api/login/${username}`;
     const response = await reddit.request("POST", endpoint, headers(), options);
-
-    if (response.status !== 200 || response.data.success === false || response?.data.json.errors.length > 0) {
-        throw new Error(`login error. ${response?.data.json.errors[0][1] || "something went wrong"}. status code ${response.status}`);
-    }
-
     const redditSession = (response.headers["set-cookie"]!).toString()
         .split(";")
         .join("")

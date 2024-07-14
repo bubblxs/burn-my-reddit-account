@@ -1,12 +1,12 @@
-import fs from "fs";
+import { existsSync, readFileSync } from "fs";
 import { joinAllSubreddits, log, saveAll, upvoteAll } from "./util.js";
-import { r as reddit } from "./api/index.js";
+import { redditAPI as reddit } from "./api/index.js";
 import { getFilePath } from "./user-interactions.js";
 
 export const importData = async (username: string, password: string) => {
     const filePath = await getFilePath();
 
-    if (!fs.existsSync(filePath)) {
+    if (!existsSync(filePath)) {
         log("[_importing data_] file not found", "Error", true);
     }
 
@@ -15,11 +15,11 @@ export const importData = async (username: string, password: string) => {
     let saved = null;
 
     try {
-        const fileData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        const content = JSON.parse(readFileSync(filePath, "utf-8"));
 
-        subreddits = fileData.subreddits;
-        upvoted = fileData.upvoted;
-        saved = fileData.saved;
+        subreddits = content.subreddits;
+        upvoted = content.upvoted;
+        saved = content.saved;
 
     } catch (error) {
         log(`[_importing data_] file couldnt be parsed correctly. ${(error as Error).message}`, "Error", true);

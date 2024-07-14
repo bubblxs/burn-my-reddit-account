@@ -7,7 +7,7 @@ import { waitSeconds, log, removeDuplicated } from "../util.js";
  *
  * to do: fix regex
  * apparently reddit has changed some of its html tags so filtering them is kinda fucked up now
- * is still working but we are getting random subreddits recommended in https://old.reddit.com/subreddits/
+ * is still working but we are getting random subreddits in https://old.reddit.com/subreddits/
  *  
 **/
 

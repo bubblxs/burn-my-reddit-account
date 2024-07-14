@@ -33,10 +33,10 @@ import { getCredentials, importOrExport, migrateAccountsOrImportExport } from ".
             log("account migration has started. it may take a few minutes", "Log");
             await migrateAccounts(currentAccount, newAccount);
         }
+        
+        log("done", "Log");
+
     } catch (error) {
-        /* 🤡 */
         log((error as Error).message, "Error", true);
     }
-
-    log("all done!", "Success");
 })();

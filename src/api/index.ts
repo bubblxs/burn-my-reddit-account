@@ -17,8 +17,7 @@ const redditAPI = {
     getJoinedSubreddits,
 }
 
-/* yeah i know this is beyond retarded. but hey is there anything in this whole repo which is not? :3 */
 export {
-    redditAPI as r,
+    redditAPI,
     reddit,
 };

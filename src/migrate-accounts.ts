@@ -1,5 +1,5 @@
-import { r as reddit } from "./api/index.js";
-import { joinAllSubreddits, log, saveAll, upvoteAll, waitSeconds } from "./util.js";
+import { redditAPI as reddit } from "./api/index.js";
+import { joinAllSubreddits, saveAll, upvoteAll } from "./util.js";
 
 type AccountCrendentials = {
     username: string,

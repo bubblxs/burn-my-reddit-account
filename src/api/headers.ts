@@ -51,7 +51,7 @@ const userAgents = [
 ];
 
 const getRandomUserAgent = () => {
-    return userAgents[Math.floor(Math.random() * (userAgents.length - 1))];
+    return userAgents[Math.floor(Math.random() * userAgents.length)];
 };
 
 const headers = (cookie?: string) => {
